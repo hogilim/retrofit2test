@@ -12,20 +12,18 @@ import java.net.URLDecoder
 
 class MainActivity : AppCompatActivity() {
     lateinit var retrofit: Retrofit
-    lateinit var myAPI: RetrofitService
+    lateinit var myAPI: RetrofitService // 작성한 API interface
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val TAG = MainActivity::class.java.simpleName
-        Log.d(TAG, "on create!")
         setContentView(R.layout.activity_main)
+
         //retrofit setting
-        retrofit = RetrofitClient.getInstnace() // 2에서 만든 Retrofit client의 instance를 불러옵니다.
-        myAPI = retrofit.create(RetrofitService::class.java)
-        //우리는 이제 그것을 사용할 수 있습니다.
-        //Runnable로 감싸주는 이유는!
-        // Android 에서 MainThread 에서 네트워킹 관련 일을 못해서
-        // 새로운 스레드에서 해주어야 합니다. 마지막에 .run() 잊지 마세요
+        retrofit = RetrofitClient.getInstnace() // 작성한 retrofit 객체 불러옴
+        myAPI = retrofit.create(RetrofitService::class.java) // retrofit 객체 생성
+        // Runnable로 감싸주는 이유는
+        // Android 에서 MainThread 네트워킹 관련 일 처리할떄
+        // 새로운 스레드에서 실행 마지막에 .run() 잊지말 것
         Runnable {
             myAPI.getData(
                 2020,
@@ -58,6 +56,11 @@ class MainActivity : AppCompatActivity() {
                     println("response : ${response.code()}")
                     println("response : ${response.raw().request().url().url()}")
                     text1.setText("response : ${response.body()}")
+
+                    // Data class 멤버 인스턴스 접근
+                    val a: Data = response.body()!!
+                    println(a.response.body.items[0].districtName)
+
                     //Log.d(TAG, "response : ${response.errorBody()}")
                     //Log.d(TAG, "response : ${response.message()}")
                     //Log.d(TAG, "response : ${response.code()}") //이게 가장 에러를 알아보기 쉬운 곳 입니다.
