@@ -2,6 +2,10 @@ package com.example.myapplication
 
 import android.net.Uri
 import android.util.Log
+import com.example.myapplication.login.LoginResponse
+import com.example.myapplication.login.LoginSend
+import com.example.myapplication.register.RegisterResponse
+import com.example.myapplication.register.UserLocation
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,7 +20,7 @@ fun main() {
     lateinit var myAPI: RetrofitService
     retrofit = RetrofitClient.getInstnace() // 2에서 만든 Retrofit client의 instance를 불러옵니다.
     myAPI = retrofit.create(RetrofitService::class.java)
-
+    /*
     Runnable {
         myAPI.getData(
             2020,
@@ -59,5 +63,90 @@ fun main() {
             }
         })
     }.run()
+    var a = UserLocation("관악","신림")
+    Runnable {
+        myAPI.register(
+            "hogi",
+            "1234",
+            "gogi",
+            a
+        ).enqueue(object : Callback<RegisterResponse> {
+
+            //이때 onFaliure는 Cal을 서버쪽으로 아예 보내지 못한 경우입니다.
+            override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                println(t.message)
+            }
+
+
+            //만약 보낸 것이 성공했을 경우는 resonse를 가지고 들어옵니다.
+            //그리고 call을 때릴 때 RawResponseData로 갔으니까 Reponse도 그 타입을 가지고 옵니다.
+            override fun onResponse(
+                call: Call<RegisterResponse>,
+                response: Response<RegisterResponse>
+            ) {
+                println("response : ${response.body()!!}")
+
+                println("response : ${response.errorBody()}")
+                println("response : ${response.message()}")
+                println("response : ${response.code()}")
+                println("response : ${response.raw().request().url().url()}")
+            }
+        })
+    }.run()
+     */
+
+    Runnable {
+        val a = LoginSend("hogi","1234")
+        myAPI.login(
+            a
+        ).enqueue(object : Callback<LoginResponse> {
+
+            //이때 onFaliure는 Call을 서버쪽으로 아예 보내지 못한 경우입니다.
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                println(t.message)
+            }
+
+
+            //만약 보낸 것이 성공했을 경우는 resonse를 가지고 들어옵니다.
+            //그리고 call을 때릴 때 RawResponseData로 갔으니까 Reponse도 그 타입을 가지고 옵니다.
+            override fun onResponse(
+                call: Call<LoginResponse>,
+                response: Response<LoginResponse>
+            ) {
+                println("response : ${response.errorBody()}")
+                println("response : ${response.message()}")
+                println("response : ${response.code()}")
+                println("response : ${response.raw().request().url().url()}")
+                println("response : ${response.body()!!}")
+            }
+        })
+    }.run()
+/*
+    Runnable {
+        myAPI.test(
+        ).enqueue(object : Callback<Test> {
+
+            //이때 onFaliure는 Cal을 서버쪽으로 아예 보내지 못한 경우입니다.
+            override fun onFailure(call: Call<Test>, t: Throwable) {
+                println(t.message)
+            }
+
+
+            //만약 보낸 것이 성공했을 경우는 resonse를 가지고 들어옵니다.
+            //그리고 call을 때릴 때 RawResponseData로 갔으니까 Reponse도 그 타입을 가지고 옵니다.
+            override fun onResponse(
+                call: Call<Test>,
+                response: Response<Test>
+            ) {
+                println("response : ${response.body()!!}")
+                println("response : ${response.errorBody()}")
+                println("response : ${response.message()}")
+                println("response : ${response.code()}")
+                println("response : ${response.raw().request().url().url()}")
+            }
+        })
+    }.run()
+
+ */
 }
 
