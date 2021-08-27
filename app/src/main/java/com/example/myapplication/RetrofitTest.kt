@@ -118,6 +118,7 @@ fun main() {
                 println("response : ${response.code()}")
                 println("response : ${response.raw().request().url().url()}")
                 println("response : ${response.body()!!}")
+                println(response.body()!!.id)
             }
         })
     }.run()
